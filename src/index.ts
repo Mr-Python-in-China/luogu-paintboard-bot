@@ -4,7 +4,7 @@ import Jimp from 'jimp';
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const thw = true;
+const thw = false;
 
 export default async function start(image: string, width: string, x: string, y: string, token: string[], mirror?: string) {
     if (mirror) init(mirror);
@@ -12,6 +12,12 @@ export default async function start(image: string, width: string, x: string, y: 
     img.scale(+width / img.getWidth());
     let map = await getpaintboard();
     websocket(map);
+    (async () => {
+        while (true) {
+            await sleep(300 * 1000);
+            map = await getpaintboard();
+        }
+    })();
     for (let i of token) {
         let p = i.indexOf(':');
         (async (uid: string, token: string) => {
@@ -20,11 +26,7 @@ export default async function start(image: string, width: string, x: string, y: 
                 let color = img.getPixelColor(i, j);
                 let r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff;
                 if (map[+x + i][+y + j][0] != r || map[+x + i][+y + j][1] != g || map[+x + i][+y + j][2] != b) {
-                    try {
-                        await draw(+x + i, +y + j, [r, g, b], +uid, token);
-                    } catch (error) {
-                        if (thw) throw error;
-                    }
+                    await draw(+x + i, +y + j, [r, g, b], +uid, token);
                     await sleep(4950);
                 }
                 await sleep(50);
@@ -36,6 +38,6 @@ export default async function start(image: string, width: string, x: string, y: 
 program
     .argument("<image> <width> <x> <y> [tokens...]")
     .option("-m, --mirror <mirror>", "Mirrors. Default is https://www.oi-search.com/paintboard/.")
-    .action((args:string[],options:{mirror?:string})=>start(args[0],args[1],args[2],args[3],args.slice(4),options.mirror));
+    .action((args: string[], options: { mirror?: string }) => start(args[0], args[1], args[2], args[3], args.slice(4), options.mirror));
 
 program.version("0.0.0").parse();
