@@ -24,12 +24,12 @@ export default async function start(image: string, width: string, x: string, y: 
             while (true) {
                 let i = Math.floor(Math.random() * img.getWidth()), j = Math.floor(Math.random() * img.getHeight());
                 let color = img.getPixelColor(i, j);
-                let r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff;
-                if (map[+x + i][+y + j][0] != r || map[+x + i][+y + j][1] != g || map[+x + i][+y + j][2] != b) {
+                let r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff, a = (color & 0xff) / 256;
+                if (a > 0.5 && (map[+x + i][+y + j][0] != r || map[+x + i][+y + j][1] != g || map[+x + i][+y + j][2] != b)) {
                     await draw(+x + i, +y + j, [r, g, b], +uid, token);
-                    await sleep(4950);
+                    await sleep(4990);
                 }
-                await sleep(50);
+                await sleep(10);
             }
         })(i.substring(0, p), i.substring(p + 1));
     }

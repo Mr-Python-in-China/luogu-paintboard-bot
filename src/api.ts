@@ -25,8 +25,9 @@ export async function draw(x: number, y: number, color: Color, uid: number, toke
     try {
         let res = await axios.post("/paint", s);
         if (res.data?.status != 200) throw "返回错误：" + res.data?.data;
-    } catch {
+    } catch (err) {
         await sleep(5000);
+        console.error("绘画时发生错误：",err);
         return await draw(x, y, color, uid, token);
     }
 }
@@ -44,7 +45,8 @@ export async function getpaintboard() {
             ]
         }
         return arr;
-    } catch {
+    } catch (err) {
+        console.error("获取画板时发生错误：",err);
         await sleep(5000);
         return await getpaintboard();
     }
@@ -62,7 +64,8 @@ export async function websocket(paintboard: Color[][]) {
             })();
         });
         ws.on("close", () => websocket(paintboard));
-    } catch {
+    } catch (err) {
+        console.log("建立 websocket 连接时发生错误：",err);
         await sleep(5000);
         return await websocket(paintboard);
     }
