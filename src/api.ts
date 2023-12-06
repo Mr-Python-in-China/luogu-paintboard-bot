@@ -63,9 +63,12 @@ export async function websocket(paintboard: Color[][]) {
                 for (let i = 0; i < 1000; ++i) paintboard[i] = p[i];
             })();
         });
-        ws.on("close", () => websocket(paintboard));
+        ws.on("close", () => {
+            console.error("Websocket 连接断开");
+            websocket(paintboard);
+        });
     } catch (err) {
-        console.log("建立 websocket 连接时发生错误：",err);
+        console.error("建立 websocket 连接时发生错误：",err);
         await sleep(5000);
         return await websocket(paintboard);
     }
