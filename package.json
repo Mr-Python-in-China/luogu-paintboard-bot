@@ -8,9 +8,6 @@
   },
   "author": "MrPython",
   "license": "LGPL-3.0",
-  "bin": {
-    "draw": "dist/index.js"
-  },
   "devDependencies": {
     "@types/qs": "^6.9.10",
     "@types/ws": "^8.5.10",
