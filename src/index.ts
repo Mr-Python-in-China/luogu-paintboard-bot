@@ -45,7 +45,7 @@ export default async function start(image: string, width: string, sx: string, sy
         }
     })();
     for (let i of token) {
-        let p = i.indexOf(' :');
+        let p = i.indexOf(':');
         (async (uid: string, token: string) => {
             while (flag == -1) {
                 let i = Math.floor(Math.random() * img.getWidth()), j = Math.floor(Math.random() * img.getHeight());
@@ -53,7 +53,7 @@ export default async function start(image: string, width: string, sx: string, sy
                 let r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff, a = (color & 0xff) / 256;
                 if (a > 0.5 && (map[x + i][y + j][0] != r || map[x + i][y + j][1] != g || map[x + i][y + j][2] != b)) {
                     await draw(x + i, y + j, [r, g, b], uid, token);
-                    await sleep(5000);
+                    await sleep(30*1000);
                 }
             }
             --flag;
@@ -89,7 +89,7 @@ export default async function start(image: string, width: string, sx: string, sy
                     let r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff, a = (color & 0xff) / 256;
                     if (a <= 0.5 || (map[p.x][p.y][0] == r && map[p.x][p.y][1] == g && map[p.x][p.y][2] == b)) continue;
                     await draw(p.x, p.y, [r, g, b], uid, token);
-                    await sleep(4950);
+                    await sleep(30*1000-50);
                 }
                 await sleep(50);
             }
