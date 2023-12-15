@@ -4,7 +4,7 @@
 ```sh
 npm install
 npm run compile
-node ./dist/src [-m <mirror>] <image> <width> <x> <y> [tokens...]
+node ./dist/index.js [-m <mirror>] <image> <width> <x> <y> [tokens...]
 ```
 - `mirror`: 镜像源，默认 `https://www.oi-search.com/paintboard/`。
 - `image`: 图片路径。
