@@ -6,8 +6,6 @@ import { Queue } from './queue';
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const thw = false;
-
 export default async function start(image: string, width: string, sx: string, sy: string, token: string[], mirror?: string) {
     let x = +sx, y = +sy;
 
@@ -32,7 +30,7 @@ export default async function start(image: string, width: string, sx: string, sy
             if (map[x + i][y + j][0] != r || map[x + i][y + j][1] != g || map[x + i][y + j][2] != b) ++undraw;
         }
         if (undraw <= all * 0.2) flag = token.length;
-        console.log(`undrawed: ${undraw}/${all} ${undraw/all}`);
+        console.log(`drawed: ${all-undraw}/${all} ${1-undraw/all}`);
     }
     await update_map();
     websocket(map, update_map, event);
